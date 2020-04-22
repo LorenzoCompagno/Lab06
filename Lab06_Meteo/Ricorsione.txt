@@ -1,0 +1,42 @@
+Obiettivo: trovare la sequenza di città da visitare, rispettando i vincoli, tale da minimizzare i costi
+
+Input: 
+	- per ogni città tutte le precipitazioni dei primi 15 giorni del mese scelto
+	
+Output: 
+	- List<Citta> soluzione : lista di città che minimizza i costi
+
+
+1) Cosa rappresenta il "livello" nel mio algoritmo ricorsivo?
+	Il giorno su cui stiamo decidendo quale città andrà
+
+2) Com'è fatta una soluzione parziale?
+	List<Città>
+
+3) Come faccio a riconoscere se una soluzione parziale è anche completa?
+	Se sono al livello 15 (15 giorni)
+
+4) Data una soluzione parziale, come faccio a sapere se è valida o se non è valida?
+	Se rispetta i vincoli posti:
+	- nei 15 ivelli deve esserci almeno un'istanza per ogni città
+	- in nessuna città si possono trascorrere più di 6 giornate consecutive
+	- Scelta una città, il tecnico non si può spostare prima di aver trascorso 3 giorni consecutivi
+
+5) Data una soluzione completa, come faccio a sapere se è valida o se non è valida?
+	Calcolo il costo e trovo se è il min
+
+6) Qual è la regola per generare tutte le soluzioni del livello+1 a partire da una soluzione parziale del
+livello corrente?
+	Provare a inserire tutte le 3 città rispettando i vincoli
+
+7) Qual è la struttura dati per memorizzare una soluzione (parziale o completa)?
+List<Citta> minimo fino ad adesso
+
+8) Qual è la struttura dati per memorizzare lo stato della ricerca (della ricorsione)?
+List<Citta> possibile minimo!!
+
+
+
+genova 
+genova 
+Torino

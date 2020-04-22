@@ -1,5 +1,6 @@
 package it.polito.tdp.meteo.model;
 
+import java.util.Date;
 import java.util.List;
 
 public class Citta {
@@ -30,6 +31,17 @@ public class Citta {
 
 	public List<Rilevamento> getRilevamenti() {
 		return rilevamenti;
+	}
+	public Rilevamento getRilevamentoUmidita(int giorno) {
+		/*Date data = new Date();
+		data.setYear(anno);
+		data.setMonth(mese);
+		data.setDate(giorno);*/
+		for(Rilevamento r: rilevamenti) {
+			if(r.getData().getDate()==(giorno))
+				return r;
+		}
+		return null;
 	}
 
 	public void setRilevamenti(List<Rilevamento> rilevamenti) {
@@ -78,5 +90,12 @@ public class Citta {
 		return nome;
 	}
 	
+	public double calcolaUmiditaMedia() {
+		int somma = 0;
+		for(Rilevamento r: rilevamenti)
+			somma+=r.getUmidita();
+		
+		return somma/rilevamenti.size();
+	}
 
 }
