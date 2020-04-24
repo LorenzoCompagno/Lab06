@@ -12,7 +12,8 @@ import java.util.Set;
 import it.polito.tdp.meteo.DAO.MeteoDAO;
 
 public class Model {
-	
+	private boolean primaEccezione = true;
+	private Integer costoTotale = 0;
 	private List <String> soluzione;
 	private Map <String, Citta> tuttecitta;
 	private MeteoDAO meteo ;
@@ -28,15 +29,18 @@ public class Model {
 	}
 
 	// of course you can change the String output with what you think works best
-	public List<Double> getUmiditaMedia(int mese) {
+	public List<Citta> getUmiditaMedia(int mese) {
 		Citta milano = new Citta ("Milano", meteo.getAllRilevamentiLocalitaMese(mese, "Milano"));
+		milano.calcolaUmiditaMedia();
 		Citta torino = new Citta ("Torino", meteo.getAllRilevamentiLocalitaMese(mese, "Torino"));
+		torino.calcolaUmiditaMedia();
 		Citta genova = new Citta ("Genova", meteo.getAllRilevamentiLocalitaMese(mese, "Genova"));
-		List<Double> medie = new ArrayList<>();
-		medie.add(milano.calcolaUmiditaMedia());
-		medie.add(torino.calcolaUmiditaMedia());
-		medie.add(genova.calcolaUmiditaMedia());
-		return medie;
+		genova.calcolaUmiditaMedia();
+		List<Citta> citta = new ArrayList<>();
+		citta.add(milano);
+		citta.add(torino);
+		citta.add(genova);
+		return citta;
 	}
 	
 	// of course you can change the String output with what you think works best
@@ -48,7 +52,7 @@ public class Model {
 		List <String> parziale = new ArrayList<>();
 		soluzione = new ArrayList<>();
 		ricorsione (parziale, 0);
-		System.out.println(calcolaCosto(soluzione));
+		costoTotale = calcolaCosto(soluzione);
 		return soluzione;
 	}
 	
@@ -114,6 +118,7 @@ public class Model {
 	}
 	
 	private int calcolaCosto (List<String> altra) {
+		
 		Integer rilevamento = 0;
 		String precedente = "";
 		int contSpostamenti = 0;
@@ -129,13 +134,18 @@ public class Model {
 			try{
 				rilevamento += c.getRilevamentoUmidita(contatore).getUmidita();
 			}catch(NullPointerException npe) {
-				/*System.out.println("Mancano i dati del giorno "+contatore+" della località "+s+"\n "
-						+ "La sequenza potrebbe essere quindi errata per mancanza di dati");
-				*/}
+				if(primaEccezione)
+					System.err.println("Mancano i dati del giorno "+contatore+" della località "+s+"\n"
+							+ "La sequenza potrebbe essere quindi errata per mancanza di dati");
+				primaEccezione=false;
+			}
 		}
 		
 		return (contSpostamenti*COST)+rilevamento;
 		
+	}
+	public Integer getCosto() {
+		return costoTotale;
 	}
 	
 

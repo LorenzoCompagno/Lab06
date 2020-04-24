@@ -9,9 +9,14 @@ public class Citta {
 	private String nome;
 	private List<Rilevamento> rilevamenti;
 	private int counter = 0;
+	private double umiditaMedia;
 	
 	
 	
+	public double getUmiditaMedia() {
+		return umiditaMedia;
+	}
+
 	public Citta(String nome) {
 		this.nome = nome;
 	}
@@ -90,12 +95,15 @@ public class Citta {
 		return nome;
 	}
 	
-	public double calcolaUmiditaMedia() {
+	public void calcolaUmiditaMedia() {
+		if(!rilevamenti.isEmpty()) {
+			
 		int somma = 0;
 		for(Rilevamento r: rilevamenti)
 			somma+=r.getUmidita();
 		
-		return somma/rilevamenti.size();
+		umiditaMedia = somma/rilevamenti.size();
+		}
 	}
 
 }
